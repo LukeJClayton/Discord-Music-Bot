@@ -120,8 +120,6 @@ client.on('interactionCreate', async (interaction) => {
       } else {
         interaction.reply('Song added to queue');
       }
-
-      let delayActive = false;
     } else if (connection) {
       interaction.reply('Unable to play song');
     }
@@ -138,6 +136,39 @@ client.on('interactionCreate', async (interaction) => {
       interaction.reply('Resuming current song');
     } else {
       interaction.reply('No song playing');
+    }
+  } else if (interaction.commandName === 'queue') {
+    if (queue.length) {
+      let output = '';
+
+      queue.forEach(function (item, index) {
+        output = output + ((index + 1) + ': ' + item.title + '\n');
+      })
+
+      interaction.reply(output);
+    } else {
+      interaction.reply('Nothing in queue');
+    }
+  } else if (interaction.commandName === 'skip') {
+    if (queue.length > 1) {
+      queue.shift();
+
+      if (queue[0]) {
+        const stream = ytdl(queue[0].url, {filter: 'audioonly', type: 'opus', highWaterMark: 1<<25 }, {highWaterMark: 1});
+
+        resource = createAudioResource(stream);
+
+        player.play(resource);
+      }
+
+      interaction.reply('Skipping song');
+    } else if (queue.length == 1) {
+      queue.shift();
+      player.stop();
+
+      interaction.reply('Skipping song');
+    } else {
+      interaction.reply('No song is currently playing');
     }
   } else if (interaction.commandName === 'join') {
     connection = join(interaction);
