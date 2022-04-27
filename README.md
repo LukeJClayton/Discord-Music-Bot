@@ -23,3 +23,30 @@ Copy your bot token into the `auth.json` file
 To start the bot itself run `node .` in the root folder
 
 In your discord channel run `!deploy` to initalise the commands
+
+
+# Avaliable commands
+
+/play SONG_URL
+- Plays a song from a youtube url
+
+/pause
+- Pauses the song that is currently playing
+
+/resume
+- Resume playback of the current song
+
+/queue
+- See the music queue
+
+/skip
+- Skip to the next song in the queue
+
+/join
+- Join the voice channel
+
+/leave
+- Leave the voice channel
+
+/clear
+- Clear all messages made by the bot
