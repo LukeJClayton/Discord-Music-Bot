@@ -115,8 +115,16 @@ client.on('interactionCreate', async (interaction) => {
         });
       }
 
-      if (queue.length == 1) {
+      if (queue.length == 1 && player) {
         interaction.reply('Playing song: ' + song.title);
+
+        if (queue[0]) {
+          const stream = ytdl(queue[0].url, {filter: 'audioonly', type: 'opus', highWaterMark: 1<<25 }, {highWaterMark: 1});
+
+          resource = createAudioResource(stream);
+
+          player.play(resource);
+        }
       } else {
         interaction.reply('Song added to queue');
       }
